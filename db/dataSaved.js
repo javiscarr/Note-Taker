@@ -28,4 +28,19 @@ class Save {
             return parsedNotes;
         });
     }
+
+    addNote(note) {
+        const { title, text} = note;
+        if (!title || !text) {
+            throw new Error('Title and text areas can not be left blank!');
+        }
+
+        //creates a unique ID for each note using UUID 
+        const newNote = { title, text, id: uuidv4() };
+
+        return this.returnNotes()
+            .then(notes => [...notes, newNote])
+            .then(updatedNotes => this.write(updatedNotes))
+            .then(() => newNote);
+    }
 }
