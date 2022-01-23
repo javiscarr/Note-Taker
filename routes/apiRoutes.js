@@ -5,7 +5,7 @@ const dataSaved = require('../db/dataSaved');
 
 //GET request
 
-router.get('/notes', function (req, res) {
+router.get('/api/notes', function (req, res) {
     
     dataSaved
         .returnNotes()
@@ -15,10 +15,19 @@ router.get('/notes', function (req, res) {
 
 //POST request
 
-router.post('/notes', (req, res) => {
+router.post('/api/notes', (req, res) => {
 
     dataSaved
         .addNote(req.body)
         .then((note) => res.json(note))
+        .catch(err => res.status(500).json(err));
+});
+
+//DELETE request
+router.delete('/api/notes/:id', function (req, res) {
+    
+    dataSaved
+        .deleteNote(req.params.id)
+        .then(() => res.json({ ok: true}))
         .catch(err => res.status(500).json(err));
 });
