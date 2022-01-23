@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const { navajowhite } = require("color-name");
 const { elementAt } = require("rxjs");
 
@@ -154,10 +155,36 @@ const renderNoteList = async (notes) => {
         return liEl;
 
     };
+
+    if (jsonNotes.length === 0) {
+        noteListItems.push(createLi('No saved note!', false));
+    }
+
+    jsonNotes.forEach((note) => {
+        const li = createLi(note.title);
+        li.dataset.note = JSON.stringify(note);
+
+        noteListItems.push(li);
+    });
+
+    if (window.location.pathname === '/notes') {
+        noteListItems.forEach((note) => noteList[0].append(note));
+    }
+};
+
+//retrieves notes from the database and renders them to the side of the page
+
+const getAndRenderNotes = () => getNotes().then(renderNoteList);
+
+if (window.location.pathname === '/notes') {
+    savedNoteBtn.addEventListener('click', confirmNoteSave);
+    newNoteBtn.addEventListener('click', handleNewNoteView);
+    noteTitle.addEventListener('keyup', handleRenderSaveBtn);
+    noteText.addEventListener('keyup', handleRenderSaveBtn)
 }
 
 
-
+getAndRenderNotes();
 
 
 
