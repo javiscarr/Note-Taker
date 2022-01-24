@@ -68,10 +68,25 @@ app.delete('/api/notes/:id', function(req, res) {
     }).then(function(notes) {
         writeNote('/db/db.json', JSON.stringify(notes))
     })
-})
+});
 
-app.use('/api', apiRoutes);
-app.use('/', htmlRoutes);
+//HTML Routes
+
+app.get('/notes', function(req, res) {
+    res.sendFile(path.join(__dirname, './public/notes.html'));
+});
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, './public/notes.html'));
+});
+
+
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, './public/notes.html'));
+});
+
+
+
 
 //Listen
 
