@@ -1,4 +1,4 @@
-//dependency
+//dependencies
 
 const express = require('express');
 const path = require('path');
@@ -6,8 +6,8 @@ const fs = require('fs');
 const util = require('util');
 
 
-const readNote = util.promisify(fs.readFile);
-const writeNote = util.promisify(fs.writeFile);
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 //express server is created 
 
@@ -28,7 +28,7 @@ app.use(express.static('public'));
 
 //API Route | "GET" request
 app.get('/api/notes', function(req, res) {
-    readNote('./db/db.json', 'utf-8').then(function(data) {
+    readFileAsync('./db/db.json', 'utf-8').then(function(data) {
     notes = [].concat(JSON.parse(data))
     res.json(notes);
     })
@@ -37,13 +37,13 @@ app.get('/api/notes', function(req, res) {
 //API Route | "POST" request
 app.post('/api/notes', function(req, res) {
     const note = req.body;
-    readNote('./db/db.json', 'utf-8').then(function(data) {
+    readFileAsync('./db/db.json', 'utf-8').then(function(data) {
         const notes = [].concat(JSON.parse(data));
         note.id = notes.length + 1
         notes.push(note);
         return notes
     }).then(function(notes) {
-        writeNote('./db/db.json', JSON.stringify(notes))
+        writeFileAsync('./db/db.json', JSON.stringify(notes))
         res.json(note);
     })
 });
@@ -51,7 +51,7 @@ app.post('/api/notes', function(req, res) {
 //API Route | "DELETE" Request
 app.delete('/api/notes/:id', function(req, res) {
     const deleteId = parseInt(req.params.id);
-    readNote('/db/db.json', 'utf-8').then(function(data) {
+    readFileAsync('/db/db.json', 'utf-8').then(function(data) {
         const notes = [].concat(JSON.parse(data));
         const newNoteData =[]
         for (let i = 0; i < notes.length; i++) {
@@ -62,7 +62,7 @@ app.delete('/api/notes/:id', function(req, res) {
         }  
              return newNoteData
     }).then(function(notes) {
-        writeNote('/db/db.json', JSON.stringify(notes))
+        writeFileAsync('/db/db.json', JSON.stringify(notes))
     })
 });
 
