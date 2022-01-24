@@ -15,10 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 
-//directs server to route files
-
-const apiRoutes = require('./routes/apiRoutes');
-const htmlRoutes = require('./routes/htmlRoutes');
 
 //setting Express app up to handle data parsing
 
