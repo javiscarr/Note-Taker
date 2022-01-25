@@ -1,6 +1,4 @@
-const { json } = require("body-parser");
-const { navajowhite } = require("color-name");
-const { elementAt } = require("rxjs");
+
 
 let noteTitle;
 let noteText;
@@ -91,7 +89,7 @@ const handleNoteDelete = (e) => {
     e.stopPropagation();
 
     const note = e.target;
-    const notId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+    const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
 
     if (activeNote.id === noteId) {
         activeNote = {};

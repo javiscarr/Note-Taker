@@ -4,10 +4,11 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
+const uuid = require("uuid");
 
 
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
+//const readFileAsync = util.promisify(fs.readFile);
+//const writeFileAsync = util.promisify(fs.writeFile);
 
 //express server is created 
 
@@ -17,29 +18,25 @@ const PORT = process.env.PORT || 3001;
 
 
 //setting Express app up to handle data parsing
+//static middleware
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-//static middleware
 app.use(express.static('public'));
 
 
 
 //API Route | "GET" request
-app.get('/api/notes', function(req, res) {
-    readFileAsync('./db/db.json', 'utf-8').then(function(data) {
-    notes = [].concat(JSON.parse(data))
-    res.json(notes);
-    })
+app.get('/api/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, '/db/db.json'))
+
 });
 
 //API Route | "POST" request
-app.post('/api/notes', function(req, res) {
-    const note = req.body;
-    readFileAsync('./db/db.json', 'utf-8').then(function(data) {
-        const notes = [].concat(JSON.parse(data));
-        note.id = notes.length + 1
+app.post('/api/notes', (req, res) => {
+    const notes = JSON.parse(fs.readFileSync('/db/db.json'));
+    const newNotes = req.body;
+    newNotes.id = uuid.lv4();
         notes.push(note);
         return notes
     }).then(function(notes) {
