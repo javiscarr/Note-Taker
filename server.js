@@ -43,23 +43,13 @@ app.post('/api/notes', (req, res) => {
 });
 
 //API Route | "DELETE" Request
-app.delete('/api/notes/:id', function(req, res) {
-    const deleteId = parseInt(req.params.id);
-    readFileAsync('/db/db.json', 'utf-8').then(function(data) {
-        const notes = [].concat(JSON.parse(data));
-        const newNoteData =[]
-        for (let i = 0; i < notes.length; i++) {
-            if(deleteId !== notes[i].id) {
-                newNoteData.push(notes[i])
-            }
-            
-        }  
-             return newNoteData
-    }).then(function(notes) {
-        writeFileAsync('/db/db.json', JSON.stringify(notes))
-    })
-});
-
+app.delete('/api/notes/:id', (req, res) => {
+    const notes = JSON.parse(fs.readFileSync('./db/db.json'));
+    const deleteNote = notes.filter((dltNote) => dltNote.id !== req.params.id);;
+    fs.readFileSync('./db/db.json', JSON.stringify(dltNote));
+    res.json(dltNote);
+        
+        
 //HTML Routes
 
 app.get('/notes', function(req, res) {
