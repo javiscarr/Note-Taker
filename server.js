@@ -36,13 +36,10 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
     const notes = JSON.parse(fs.readFileSync('/db/db.json'));
     const newNotes = req.body;
-    newNotes.id = uuid.lv4();
-        notes.push(note);
-        return notes
-    }).then(function(notes) {
-        writeFileAsync('./db/db.json', JSON.stringify(notes))
-        res.json(note);
-    })
+    newNotes.id = uuid.v4();
+        notes.push(newNotes);
+        fs.writeFileAsync('./db/db.json', JSON.stringify(notes))
+        res.json(notes);
 });
 
 //API Route | "DELETE" Request
