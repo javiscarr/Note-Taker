@@ -1,4 +1,6 @@
-{
-    "Title": "My first note",
-    "Text": "This is just a test note"
-}
+[{
+
+    "title": "note",
+    "text": "test"
+    
+}]
