@@ -32,13 +32,20 @@ app.post('/api/notes', (req, res) => {
     return console.log("Added new note: "+newNote.title);
 });
 
+
+//Returns a specific note
+app.get('/api/notes:id', (req, res) => {
+        
+    res.json(notes[req.params.id]);
+});
+
+
 //DELETE request
-router.delete('/api/notes/:id', function (req, res) {
+app.delete('/api/notes/:id', (req, res) => {
     
-    stored
-        .deleteNote(req.params.id)
-        .then(() => res.json({ ok: true}))
-        .catch(err => res.status(500).json(err));
+    notes.splice(req.params.id, 1);
+    updatedDb();
+    console.log("Deleted note with id "+req.params.id);
 });
 
     })
@@ -46,4 +53,3 @@ router.delete('/api/notes/:id', function (req, res) {
 
 
 
-module.exports = router;
